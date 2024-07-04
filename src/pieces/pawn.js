@@ -1,0 +1,23 @@
+import Piece from './piece';
+
+class Pawn extends Piece {
+  constructor(row, column, side) {
+    super(row, column, side);
+    this.name = 'pawn';
+    this.display = `<i class="fas fa-chess-pawn ${side}"></i>`;
+  }
+
+  findLegalMoves() {
+    const possibleMoves = [];
+    if (this.side == 'white') {
+      this.row - 1 > 0 && possibleMoves.push([this.row - 1, this.column]);
+      this.row - 2 > 0 && possibleMoves.push([this.row - 2, this.column]);
+    }
+    return possibleMoves;
+  }
+
+  promote() {}
+  enPassant() {}
+}
+
+export default Pawn;

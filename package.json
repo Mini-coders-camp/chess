@@ -1,0 +1,15 @@
+{
+  "name": "chess",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.2",
+    "vite": "^5.3.1"
+  }
+}
