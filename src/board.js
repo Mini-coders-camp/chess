@@ -1,4 +1,5 @@
 import Pawn from './pieces/pawn';
+import Bishop from './pieces/bishop';
 import Square from './square';
 
 class Board {
@@ -57,7 +58,12 @@ class Board {
 
   setPiecesOnStartingPositions() {
     let pawn = new Pawn(6, 0, 'white');
+    let bishopLW = new Bishop(7, 2, 'white');
+    let bishopRW = new Bishop(7, 5, 'white');
+
     this.setPiece(pawn);
+    this.setPiece(bishopLW);
+    this.setPiece(bishopRW);
   }
 
   setPiece(piece) {
