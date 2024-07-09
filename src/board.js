@@ -1,5 +1,6 @@
 import Pawn from './pieces/pawn';
 import Square from './square';
+import Rook from './pieces/rook';
 
 class Board {
   constructor() {
@@ -58,6 +59,16 @@ class Board {
   setPiecesOnStartingPositions() {
     let pawn = new Pawn(6, 0, 'white');
     this.setPiece(pawn);
+    pawn = new Pawn(6, 1, 'white');
+    this.setPiece(pawn);
+    let rook = new Rook(7, 0, 'white');
+    this.setPiece(rook);
+    rook = new Rook(7, 7, 'white');
+    this.setPiece(rook);
+    rook = new Rook(0, 7, 'black');
+    this.setPiece(rook);
+    rook = new Rook(0, 0, 'black');
+    this.setPiece(rook);
   }
 
   setPiece(piece) {
