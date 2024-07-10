@@ -58,16 +58,20 @@ class Board {
 
   setPiecesOnStartingPositions() {
     let pawn = new Pawn(6, 0, 'white');
-    let leftWhiteBishop = new Bishop(7, 2, 'white');
-    let rightWhiteBishop = new Bishop(7, 5, 'white');
-    let leftBlackBishop = new Bishop(0, 2, 'black');
-    let rightBlackBishop = new Bishop(0, 5, 'black');
-
     this.setPiece(pawn);
-    this.setPiece(leftWhiteBishop);
-    this.setPiece(rightWhiteBishop);
-    this.setPiece(leftBlackBishop);
-    this.setPiece(rightBlackBishop);
+
+    /***** Bishops *****/ 
+    let bishop = new Bishop(7, 2, 'white');
+    this.setPiece(bishop);
+
+    bishop = new Bishop(7, 5, 'white');
+    this.setPiece(bishop);
+
+    bishop = new Bishop(0, 2, 'black');
+    this.setPiece(bishop);
+
+    bishop = new Bishop(0, 5, 'black');
+    this.setPiece(bishop);
   }
 
   setPiece(piece) {
