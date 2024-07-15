@@ -57,18 +57,12 @@ class Board {
   }
 
   setPiecesOnStartingPositions() {
-    let pawn = new Pawn(6, 0, 'white');
-    this.setPiece(pawn);
-    pawn = new Pawn(6, 1, 'white');
-    this.setPiece(pawn);
-    let rook = new Rook(7, 0, 'white');
-    this.setPiece(rook);
-    rook = new Rook(7, 7, 'white');
-    this.setPiece(rook);
-    rook = new Rook(0, 7, 'black');
-    this.setPiece(rook);
-    rook = new Rook(0, 0, 'black');
-    this.setPiece(rook);
+    this.setPiece(new Pawn(6, 0, 'white'));
+    this.setPiece(new Pawn(6, 1, 'white'));
+    this.setPiece(new Rook(7, 0, 'white'));
+    this.setPiece(new Rook(7, 7, 'white'));
+    this.setPiece(new Rook(0, 7, 'black'));
+    this.setPiece(new Rook(0, 0, 'black'));
   }
 
   setPiece(piece) {
