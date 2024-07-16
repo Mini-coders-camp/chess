@@ -10,10 +10,10 @@ class Bishop extends Piece {
     const possibleMoves = [];
 
     for(let i = 0; i < 7; i++) {
-      (this.row - i >= 0 && this.column - i >= 0) && possibleMoves.push([this.row - i, this.column - i]);
-      (this.row - i >= 0 && this.column + i <= 7) && possibleMoves.push([this.row - i, this.column + i]);
-      (this.row + i <= 7 && this.column + i <= 7) && possibleMoves.push([this.row + i, this.column + i]);
-      (this.row + i <= 7 && this.column - i >= 0) && possibleMoves.push([this.row + i, this.column - i]);
+      if (this.row - i >= 0 && this.column - i >= 0) possibleMoves.push([this.row - i, this.column - i]);
+      if (this.row - i >= 0 && this.column + i <= 7) possibleMoves.push([this.row - i, this.column + i]);
+      if (this.row + i <= 7 && this.column + i <= 7) possibleMoves.push([this.row + i, this.column + i]);
+      if (this.row + i <= 7 && this.column - i >= 0) possibleMoves.push([this.row + i, this.column - i]);
     }
     
     return possibleMoves;

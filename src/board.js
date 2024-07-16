@@ -61,17 +61,10 @@ class Board {
     this.setPiece(pawn);
 
     /***** Bishops *****/ 
-    let bishop = new Bishop(7, 2, 'white');
-    this.setPiece(bishop);
-
-    bishop = new Bishop(7, 5, 'white');
-    this.setPiece(bishop);
-
-    bishop = new Bishop(0, 2, 'black');
-    this.setPiece(bishop);
-
-    bishop = new Bishop(0, 5, 'black');
-    this.setPiece(bishop);
+    this.setPiece(new Bishop(7, 2, 'white'));
+    this.setPiece(new Bishop(7, 5, 'white'));
+    this.setPiece(new Bishop(0, 2, 'black'));
+    this.setPiece(new Bishop(0, 5, 'black'));
   }
 
   setPiece(piece) {
