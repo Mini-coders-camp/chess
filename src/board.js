@@ -57,9 +57,12 @@ class Board {
   }
 
   setPiecesOnStartingPositions() {
-    let pawn = new Pawn(6, 0, 'white');
-    this.setPiece(pawn);
-
+    /***** Pawns *****/
+    for(let i = 0; i < 8; i++){      
+      this.setPiece(new Pawn(6, i, 'white'));
+      this.setPiece(new Pawn(1, i, 'black'));     
+    }
+    
     /***** Bishops *****/ 
     this.setPiece(new Bishop(7, 2, 'white'));
     this.setPiece(new Bishop(7, 5, 'white'));
