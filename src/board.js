@@ -1,4 +1,5 @@
 import Pawn from './pieces/pawn';
+import Bishop from './pieces/bishop';
 import Square from './square';
 
 class Board {
@@ -61,6 +62,12 @@ class Board {
       this.setPiece(new Pawn(6, i, 'white'));
       this.setPiece(new Pawn(1, i, 'black'));     
     }
+    
+    /***** Bishops *****/ 
+    this.setPiece(new Bishop(7, 2, 'white'));
+    this.setPiece(new Bishop(7, 5, 'white'));
+    this.setPiece(new Bishop(0, 2, 'black'));
+    this.setPiece(new Bishop(0, 5, 'black'));
   }
 
   setPiece(piece) {
