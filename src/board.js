@@ -1,6 +1,7 @@
 import Pawn from './pieces/pawn';
 import Bishop from './pieces/bishop';
 import Square from './square';
+import Rook from './pieces/rook';
 
 class Board {
   constructor() {
@@ -57,6 +58,12 @@ class Board {
   }
 
   setPiecesOnStartingPositions() {
+
+    this.setPiece(new Rook(7, 0, 'white'));
+    this.setPiece(new Rook(7, 7, 'white'));
+    this.setPiece(new Rook(0, 7, 'black'));
+    this.setPiece(new Rook(0, 0, 'black'));
+
     /***** Pawns *****/
     for(let i = 0; i < 8; i++){      
       this.setPiece(new Pawn(6, i, 'white'));
@@ -68,6 +75,7 @@ class Board {
     this.setPiece(new Bishop(7, 5, 'white'));
     this.setPiece(new Bishop(0, 2, 'black'));
     this.setPiece(new Bishop(0, 5, 'black'));
+
   }
 
   setPiece(piece) {
