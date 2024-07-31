@@ -7,6 +7,7 @@ class Knight extends Piece {
     this.display = `<i class="fas fa-chess-knight ${side}"></i>`; //fontawesome knight
   
   }
+  /* Legal_moves_Knight*/
   findLegalMoves() {
     const possibleMoves = [];
    

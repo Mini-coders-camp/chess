@@ -55,7 +55,7 @@ class Board {
 
     this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
   }
-  /* Knight*/
+  /* Knight_Start_Position*/
   setPiecesOnStartingPositions() {
     let pawn = new Pawn(6, 0, 'white');
     this.setPiece(pawn);
