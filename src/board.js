@@ -1,7 +1,6 @@
 import Pawn from './pieces/pawn';
-import Bishop from './pieces/bishop';
 import Square from './square';
-import Rook from './pieces/rook';
+import Knight from './pieces/knight';
 
 class Board {
   constructor() {
@@ -56,26 +55,18 @@ class Board {
 
     this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
   }
-
+  /* Knight*/
   setPiecesOnStartingPositions() {
-
-    this.setPiece(new Rook(7, 0, 'white'));
-    this.setPiece(new Rook(7, 7, 'white'));
-    this.setPiece(new Rook(0, 7, 'black'));
-    this.setPiece(new Rook(0, 0, 'black'));
-
-    /***** Pawns *****/
-    for(let i = 0; i < 8; i++){      
-      this.setPiece(new Pawn(6, i, 'white'));
-      this.setPiece(new Pawn(1, i, 'black'));     
-    }
-    
-    /***** Bishops *****/ 
-    this.setPiece(new Bishop(7, 2, 'white'));
-    this.setPiece(new Bishop(7, 5, 'white'));
-    this.setPiece(new Bishop(0, 2, 'black'));
-    this.setPiece(new Bishop(0, 5, 'black'));
-
+    let pawn = new Pawn(6, 0, 'white');
+    this.setPiece(pawn);
+    let knightB1 = new Knight(7,1,'white');
+    this.setPiece(knightB1);
+    let knightG1=new Knight(7,6,'white');
+    this.setPiece(knightG1);
+    let knightG8=new Knight(0,6,'black');
+    this.setPiece(knightG8);
+    let knightB8= new Knight(0,1,'black');
+    this.setPiece(knightB8);
   }
 
   setPiece(piece) {
