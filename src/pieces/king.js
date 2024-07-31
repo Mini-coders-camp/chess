@@ -8,17 +8,26 @@ class King extends Piece {
   }
   findLegalMoves() {
     const possibleMoves = [];
+    const directions = [
+      [0, -1],  // left
+      [0, 1],   // right
+      [-1, 0],  // down
+      [1, 0],   // up
+      [1, 1],   // up right
+      [-1, -1], // down left
+      [1, -1],  // up left
+      [-1, 1],  // down right   
+    ];
 
-    
-      if (this.column - 1 >= 0) possibleMoves.push([this.row, this.column - 1]);
-      if (this.column + 1 <= 7) possibleMoves.push([this.row, this.column + 1]);
-      if (this.row - 1 >= 0) possibleMoves.push([this.row - 1, this.column]);
-      if (this.row + 1 <= 7) possibleMoves.push([this.row + 1, this.column]);
-      if (this.row + 1 <= 7 && this.column + 1 <= 7) possibleMoves.push([this.row + 1, this.column + 1]);
-      if (this.row - 1 >= 0 && this.column - 1 >= 0) possibleMoves.push([this.row - 1, this.column - 1]);
-      if (this.row + 1 <= 7 && this.column - 1 >= 0) possibleMoves.push([this.row + 1, this.column - 1]);
-      if (this.row - 1 >= 0 && this.column + 1 <= 7) possibleMoves.push([this.row - 1, this.column + 1]);       
-    
+    directions.forEach(directions => {
+      const newRow = this.row + directions[0];
+      const newColumn = this.column + directions[1];
+
+      if (newRow >=0 && newRow <=7 && newColumn >= 0 && newColumn <= 7) {
+        possibleMoves.push([newRow, newColumn]);
+      }
+    });
+
     return possibleMoves;
   }
 }
