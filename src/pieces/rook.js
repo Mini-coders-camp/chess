@@ -16,23 +16,37 @@ class Rook extends Piece {
       { row: 0, col: 1 }   // Right
     ];
 
-    for (const { row: dRow, col: dCol } of directions) {
-      for (let i = 1; i < 8; i++) {
-        const newRow = this.row + i * dRow;
-        const newCol = this.column + i * dCol;
+    for (const { row, col } of directions) {
+      for (let distance = 1; distance < 8; distance++) {
+        const newRow = this.row + distance * row;
+        const newCol = this.column + distance * col;
+        const destination = [newRow, newCol]
 
         if (newRow < 0 || newRow >= 8 || newCol < 0 || newCol >= 8) break;
 
         const targetSquare = board.getSquare(newRow, newCol);
+        const targetSquareIsEmpty = !targetSquare.piece
+        const targetSquareIsOccupiedByTheOpponentsPiece = targetSquare.piece?.side !== this.side
 
-        if (!targetSquare.piece) {
-          possibleMoves.push([newRow, newCol]);
-        } else if (targetSquare.piece?.side !== this.side) {
-          possibleMoves.push([newRow, newCol]);
+        if (targetSquareIsEmpty) {
+          possibleMoves.push(destination);
+        } else if (targetSquareIsOccupiedByTheOpponentsPiece) {
+          possibleMoves.push(destination);
           break;
-        } else if (targetSquare.piece?.side === this.side) {
+        } else if (!targetSquareIsOccupiedByTheOpponentsPiece) {
           break;
-        }               
+        }        
+
+        /*** Second solution ***/
+        // if (targetSquareIsEmpty) {
+        //   possibleMoves.push(destination);
+        //   continue;
+        // }
+        // if (targetSquareIsOccupiedByTheOpponentsPiece) {
+        //   possibleMoves.push(destination);
+        // }
+        // break;     
+        /*** ***/  
       }
     }
     return possibleMoves;
