@@ -33,7 +33,7 @@ class Board {
     if (!piece) return;
 
     this.selectedSquare = clickedSquare;
-    this.legalMoves = piece.findLegalMoves();
+    this.legalMoves = piece.findLegalMoves(this);
 
     for (const [targetRow, targetColumn] of this.legalMoves) {
       const targetSquare = this.getSquare(targetRow, targetColumn);
