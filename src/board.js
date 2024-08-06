@@ -35,9 +35,6 @@ class Board {
     this.selectedSquare = clickedSquare;
     this.legalMoves = piece.findLegalMoves(this);
 
-    console.log(this.legalMoves);
-
-
     for (const [targetRow, targetColumn] of this.legalMoves) {
       const targetSquare = this.getSquare(targetRow, targetColumn);
       targetSquare.toggleHighlight();
@@ -62,28 +59,27 @@ class Board {
   }
 
   setPiecesOnStartingPositions() {
+
     this.setPiece(new Rook(7, 0, 'white'));
     this.setPiece(new Rook(7, 7, 'white'));
     this.setPiece(new Rook(0, 7, 'black'));
     this.setPiece(new Rook(0, 0, 'black'));
 
     /***** Pawns *****/
-    for (let i = 0; i < 8; i++) {
+    for(let i = 0; i < 8; i++){      
       this.setPiece(new Pawn(6, i, 'white'));
-      this.setPiece(new Pawn(1, i, 'black'));
+      this.setPiece(new Pawn(1, i, 'black'));     
     }
-
-    /***** Bishops *****/
+    
+    /***** Bishops *****/ 
     this.setPiece(new Bishop(7, 2, 'white'));
     this.setPiece(new Bishop(7, 5, 'white'));
     this.setPiece(new Bishop(0, 2, 'black'));
     this.setPiece(new Bishop(0, 5, 'black'));
 
-
     /***** King *****/
     this.setPiece(new King(0, 3, 'black'));
     this.setPiece(new King(7, 3, 'white'));
-
 
   }
 
