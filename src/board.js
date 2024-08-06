@@ -2,6 +2,7 @@ import Pawn from './pieces/pawn';
 import Bishop from './pieces/bishop';
 import Square from './square';
 import Rook from './pieces/rook';
+import King from './pieces/king';
 
 class Board {
   constructor() {
@@ -33,7 +34,9 @@ class Board {
 
     this.selectedSquare = clickedSquare;
     this.legalMoves = piece.findLegalMoves(this);
+
     console.log(this.legalMoves);
+
 
     for (const [targetRow, targetColumn] of this.legalMoves) {
       const targetSquare = this.getSquare(targetRow, targetColumn);
@@ -75,6 +78,13 @@ class Board {
     this.setPiece(new Bishop(7, 5, 'white'));
     this.setPiece(new Bishop(0, 2, 'black'));
     this.setPiece(new Bishop(0, 5, 'black'));
+
+
+    /***** King *****/
+    this.setPiece(new King(0, 3, 'black'));
+    this.setPiece(new King(7, 3, 'white'));
+
+
   }
 
   setPiece(piece) {
