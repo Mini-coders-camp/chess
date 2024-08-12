@@ -54,7 +54,6 @@ class Pawn extends Piece {
         }
       if (this.row + 2 <= 7 && this.row == 1) possibleMoves.push([this.row + 2, this.column]);
     }
-
     for (let i = 1; i < 2; i++) {
       if (this.row + i <= 7 && this.column + i <= 7) {
         if (board.getSquare(this.row + i, this.column + i).piece) {
@@ -65,7 +64,6 @@ class Pawn extends Piece {
         }
       }
     }
-
     for (let i = 1; i < 2; i++) {
       if (this.row + i <= 7 && this.column - i <= 7) {
         if (board.getSquare(this.row + i, this.column - i).piece) {
