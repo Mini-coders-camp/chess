@@ -31,6 +31,14 @@ class Square {
   removeHighlight() {
     this.element.classList.remove('possibleMove');
   }
+
+  checkHighlight() {
+    this.element.classList.toggle('check');
+  }
+
+  removeCheckHighlight() {
+    this.element.classList.remove('check');
+  }
 }
 
 export default Square;
