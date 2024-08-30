@@ -56,7 +56,11 @@ class Board {
     this.selectedSquare = null;
 
     this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
-    this.detectWhenKingIsInCheck();
+
+    const isKingInCheck = this.isKingInCheck();
+    if(isKingInCheck) {
+      this.highlightTheSquareIfPieceIsIinDanger(isKingInCheck);
+    }
   }
 
   setPiecesOnStartingPositions() {
@@ -86,6 +90,17 @@ class Board {
     this.getSquare(piece.row, piece.column).piece = piece;
   }
 
+  getPieces() {
+    const pieces = [];
+    this.forEachSquare((row, column) => {
+      const piece = this.getSquare(row, column).piece;      
+      if(piece) {
+        pieces.push(piece);
+      }
+    });
+    return pieces;
+  }
+
   getSquare(row, column) {
     return this.squares[row][column];
   }
@@ -98,34 +113,35 @@ class Board {
     }
   }
 
-  detectWhenKingIsInCheck() {    
-    let kingsPosition = this.findingTheKingsPosition();
-
-    // Sprawdzenie, czy któryś z królów jest w szachu
+  isKingInCheck() {    
+    let kingsPosition = this.findTheKingsPosition();
     let whiteKingInCheck = false;
     let blackKingInCheck = false;
     
-    this.forEachSquare((row, column) => {
-      const piece = this.getSquare(row, column).piece;
-      if(piece) {
-        const futureMoves = piece.findLegalMoves(this);
-        for (const [futureMoveRow, futureMoveColumn] of futureMoves) {
-          if (futureMoveRow === kingsPosition[0][0] && futureMoveColumn === kingsPosition[0][1]) {
-            whiteKingInCheck = true;
-          }
-          if (futureMoveRow === kingsPosition[1][0] && futureMoveColumn === kingsPosition[1][1]) {
-            blackKingInCheck = true;
-          } 
-        }
-      } 
+    const pieces = this.getPieces();
+    pieces.forEach(piece =>  {
+      const futureMoves = piece.findLegalMoves(this);
+      for (const [futureMoveRow, futureMoveColumn] of futureMoves) {
+        if (futureMoveRow === kingsPosition[0][0] && futureMoveColumn === kingsPosition[0][1]) {
+          whiteKingInCheck = true;
+        } 
+        if (futureMoveRow === kingsPosition[1][0] && futureMoveColumn === kingsPosition[1][1]) {
+          blackKingInCheck = true;
+        } 
+      }
     });
-    this.markingTheKingInCheck(whiteKingInCheck, blackKingInCheck, kingsPosition);    
+
+    if(whiteKingInCheck) {
+      return kingsPosition[0];
+    } else if(blackKingInCheck) {
+      return kingsPosition[1];
+    } else {
+      return null;
+    }
   }
 
-  findingTheKingsPosition() {
+  findTheKingsPosition() {
     let whiteKingPosition, blackKingPosition;
-
-    // Znalezienie pozycji królów
     this.forEachSquare((row, column) => {
       const piece = this.getSquare(row, column).piece;      
       if (piece?.name === 'king') {
@@ -136,26 +152,12 @@ class Board {
         }
       }
     });
-
     return [whiteKingPosition, blackKingPosition];
   }
-
-  markingTheKingInCheck(whiteKingInCheck, blackKingInCheck, kingsPosition) {    
-    // Usunięcie czerwonych pól 
-    this.forEachSquare((row, column) => {
-      this.getSquare(row, column).removeCheckHighlight();
-    });
-
-    // Oznaczenie królow w szachu
-    if (whiteKingInCheck) {
-      alert("Biały król jest w szachu!");
-      this.getSquare(kingsPosition[0][0], kingsPosition[0][1]).checkHighlight();
-    }
-
-    if (blackKingInCheck) {
-      alert("Czarny król jest w szachu!");
-      this.getSquare(kingsPosition[1][0], kingsPosition[1][1]).checkHighlight();
-    } 
+  
+  highlightTheSquareIfPieceIsIinDanger([row, column]) {
+      const squareOfPieceInDanger = this.getSquare(row, column);
+      squareOfPieceInDanger.checkHighlight();
   }
 }
 
