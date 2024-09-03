@@ -6,7 +6,7 @@ class King extends Piece {
     this.name = 'king';
     this.display = `<i class="fas fa-chess-king ${side}"></i>`; //fontawesome king
   }
-  findLegalMoves() {
+  findLegalMoves(board) {
     const possibleMoves = [];
     const directions = [
       [0, -1],  // left
@@ -24,7 +24,10 @@ class King extends Piece {
       const newColumn = this.column + directions[1];
 
       if (newRow >=0 && newRow <=7 && newColumn >= 0 && newColumn <= 7) {
-        possibleMoves.push([newRow, newColumn]);
+        const targetSquare = board.getSquare(newRow, newColumn);
+        if (!targetSquare.piece || targetSquare.piece.side !== this.side) {
+          possibleMoves.push([newRow, newColumn]);
+        }           
       }
     });
 
