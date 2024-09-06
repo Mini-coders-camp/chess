@@ -77,8 +77,8 @@ class Board {
     this.setPiece(new Bishop(0, 5, 'black'));
 
     /***** King *****/
-    this.setPiece(new King(0, 3, 'black'));
-    this.setPiece(new King(7, 3, 'white'));
+    this.setPiece(new King(0, 4, 'black'));
+    this.setPiece(new King(7, 4, 'white'));
   }
 
   setPiece(piece) {
