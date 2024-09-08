@@ -3,6 +3,7 @@ import Bishop from './pieces/bishop';
 import Square from './square';
 import Rook from './pieces/rook';
 import King from './pieces/king';
+import Queen from './pieces/queen';
 
 class Board {
   constructor() {
@@ -79,6 +80,10 @@ class Board {
     /***** King *****/
     this.setPiece(new King(0, 4, 'black'));
     this.setPiece(new King(7, 4, 'white'));
+
+    /***** Queen *****/
+    this.setPiece(new Queen(0, 3, 'black'));
+    this.setPiece(new Queen(7, 3, 'white'));
   }
 
   setPiece(piece) {
