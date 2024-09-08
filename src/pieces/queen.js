@@ -26,8 +26,14 @@ class Queen extends Piece {
 
         if (newRow >= 0 && newRow <= 7 && newColumn >= 0 && newColumn <= 7) {
           const targetSquare = board.getSquare(newRow, newColumn);
-          if (targetSquare.piece?.side !== this.side) {
+
+          if (!targetSquare.piece) {
             possibleMoves.push([newRow, newColumn]);
+          } else if (targetSquare.piece.side !== this.side) {
+            possibleMoves.push([newRow, newColumn]);
+            break;
+          } else {
+            break;
           }
         }
       }
