@@ -35,9 +35,6 @@ class Board {
     this.selectedSquare = clickedSquare;
     this.legalMoves = piece.findLegalMoves(this);
 
-    console.log(this.legalMoves);
-
-
     for (const [targetRow, targetColumn] of this.legalMoves) {
       const targetSquare = this.getSquare(targetRow, targetColumn);
       targetSquare.toggleHighlight();
@@ -59,6 +56,11 @@ class Board {
     this.selectedSquare = null;
 
     this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
+
+    const isKingInCheck = this.isKingInCheck();
+    if(isKingInCheck) {
+      this.highlightTheSquareIfPieceIsIinDanger(isKingInCheck);
+    }
   }
 
   setPiecesOnStartingPositions() {
@@ -79,16 +81,24 @@ class Board {
     this.setPiece(new Bishop(0, 2, 'black'));
     this.setPiece(new Bishop(0, 5, 'black'));
 
-
     /***** King *****/
-    this.setPiece(new King(0, 3, 'black'));
-    this.setPiece(new King(7, 3, 'white'));
-
-
+    this.setPiece(new King(0, 4, 'black'));
+    this.setPiece(new King(7, 4, 'white'));
   }
 
   setPiece(piece) {
     this.getSquare(piece.row, piece.column).piece = piece;
+  }
+
+  getPieces() {
+    const pieces = [];
+    this.forEachSquare((row, column) => {
+      const piece = this.getSquare(row, column).piece;      
+      if(piece) {
+        pieces.push(piece);
+      }
+    });
+    return pieces;
   }
 
   getSquare(row, column) {
@@ -101,6 +111,53 @@ class Board {
         callback(row, column);
       }
     }
+  }
+
+  isKingInCheck() {    
+    let kingsPosition = this.findTheKingsPosition();
+    let whiteKingInCheck = false;
+    let blackKingInCheck = false;
+    
+    const pieces = this.getPieces();
+    pieces.forEach(piece =>  {
+      const futureMoves = piece.findLegalMoves(this);
+      for (const [futureMoveRow, futureMoveColumn] of futureMoves) {
+        if (futureMoveRow === kingsPosition[0][0] && futureMoveColumn === kingsPosition[0][1]) {
+          whiteKingInCheck = true;
+        } 
+        if (futureMoveRow === kingsPosition[1][0] && futureMoveColumn === kingsPosition[1][1]) {
+          blackKingInCheck = true;
+        } 
+      }
+    });
+
+    if(whiteKingInCheck) {
+      return kingsPosition[0];
+    } else if(blackKingInCheck) {
+      return kingsPosition[1];
+    } else {
+      return null;
+    }
+  }
+
+  findTheKingsPosition() {
+    let whiteKingPosition, blackKingPosition;
+    this.forEachSquare((row, column) => {
+      const piece = this.getSquare(row, column).piece;      
+      if (piece?.name === 'king') {
+        if (piece.side === 'white') {
+          whiteKingPosition = [row, column];          
+        } else {
+          blackKingPosition = [row, column];
+        }
+      }
+    });
+    return [whiteKingPosition, blackKingPosition];
+  }
+  
+  highlightTheSquareIfPieceIsIinDanger([row, column]) {
+      const squareOfPieceInDanger = this.getSquare(row, column);
+      squareOfPieceInDanger.checkHighlight();
   }
 }
 
