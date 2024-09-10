@@ -29,12 +29,14 @@ class Queen extends Piece {
 
           if (!targetSquare.piece) {
             possibleMoves.push([newRow, newColumn]);
-          } else if (targetSquare.piece.side !== this.side) {
-            possibleMoves.push([newRow, newColumn]);
-            break;
-          } else {
-            break;
+            continue;
           }
+
+          if (targetSquare.piece?.side !== this.side) {
+            possibleMoves.push([newRow, newColumn]);
+          }
+
+          break;
         }
       }
     });
