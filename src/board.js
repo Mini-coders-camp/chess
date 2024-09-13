@@ -31,6 +31,7 @@ class Board {
         this.movePiece(clickedSquare);
         this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
         this.selectedSquare = null;
+        this.checkKingStatus();
         return;
       } else {
         this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
@@ -52,6 +53,13 @@ class Board {
     for (const [targetRow, targetColumn] of this.legalMoves) {
       const targetSquare = this.getSquare(targetRow, targetColumn);
       targetSquare.toggleHighlight();
+    }
+  }
+
+  checkKingStatus() {
+    const isKingInCheck = this.isKingInCheck();
+    if (isKingInCheck) {
+      this.highlightTheSquareIfPieceIsIinDanger(isKingInCheck);
     }
   }
 
