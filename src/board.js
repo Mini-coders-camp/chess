@@ -26,9 +26,16 @@ class Board {
     const clickedSquare = this.getSquare(row, column);
     const piece = clickedSquare.piece;
 
-    if (this.selectedSquare) {
-      this.movePiece(clickedSquare);
-      return;
+    if (this.selectedSquare && clickedSquare !== this.selectedSquare) {
+      if (this.legalMoves.some(([legalRow, legalColumn]) => legalRow === row && legalColumn === column)) {
+        this.movePiece(clickedSquare);
+        this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
+        this.selectedSquare = null;
+        return;
+      } else {
+        this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
+        this.selectedSquare = null;
+      }
     }
 
     if (!piece) return;
@@ -41,7 +48,6 @@ class Board {
     }
 
     this.selectedSquare = clickedSquare;
-    this.legalMoves = piece.findLegalMoves(this);
 
     for (const [targetRow, targetColumn] of this.legalMoves) {
       const targetSquare = this.getSquare(targetRow, targetColumn);
