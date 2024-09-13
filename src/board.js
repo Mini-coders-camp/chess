@@ -171,14 +171,6 @@ class Board {
     const squareOfPieceInDanger = this.getSquare(row, column);
     squareOfPieceInDanger.checkHighlight();
   }
-
-  highlightNoMoves() {
-    this.element.classList.add('noLegalMoves');
-
-    setTimeout(() => {
-      this.element.classList.remove('noLegalMoves');
-    }, 1000);
-  }
 }
 
 export default Board;

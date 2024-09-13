@@ -36,6 +36,14 @@ class Square {
   checkHighlight() {
     this.element.classList.toggle('check');
   }
+
+  highlightNoMoves() {
+    this.element.classList.add('noLegalMoves');
+
+    setTimeout(() => {
+      this.element.classList.remove('noLegalMoves');
+    }, 1000);
+  }
 }
 
 export default Square;
