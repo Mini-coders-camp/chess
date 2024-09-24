@@ -1,5 +1,5 @@
 import Piece from './piece';
-import Board from '../board';
+
 class Pawn extends Piece {
   constructor(row, column, side) {
     super(row, column, side);
@@ -10,78 +10,43 @@ class Pawn extends Piece {
   findLegalMoves(board) {
     const possibleMoves = [];
 
+    let nextRow;
+    let startRow;
+
     if (this.side === 'white') {
-      for (let i = 1; i <= 1; i++) {
-        if (this.row - 1 >= 0) {
-          if (board.getSquare(this.row - i, this.column).piece == null) {
-            possibleMoves.push([this.row - 1, this.column]);
-            if (i === 1 && this.row === 6 && board.getSquare(this.row - 2, this.column).piece == null) {
-              possibleMoves.push([this.row - 2, this.column]);
-            }
-          } else {
-            break;
-          }
-        }
-      }
-      for (let i = 1; i <= 1; i++) {
-        if (this.row - i >= 0 && this.column - i >= 0) {
-          if (board.getSquare(this.row - i, this.column - i).piece) {
-            if (board.getSquare(this.row - i, this.column - i).piece.side !== this.side) {
-              possibleMoves.push([this.row - i, this.column - i]);
-            }
-            break;
-          }
-        }
-      }
-
-      for (let i = 1; i <= 1; i++) {
-        if (this.row - i >= 0 && this.column + i <= 7) {
-          if (board.getSquare(this.row - i, this.column + i).piece) {
-            if (board.getSquare(this.row - i, this.column + i).piece.side !== this.side) {
-              possibleMoves.push([this.row - i, this.column + i]);
-            }
-            break;
-          }
-        }
-      }
+      nextRow = this.row - 1;
+      startRow = 6;
+    } else if (this.side === 'black') {
+      nextRow = this.row + 1;
+      startRow = 1;
     }
-    if (this.side === 'black') {
-      for (let i = 1; i <= 1; i++) {
-        if (this.row + 1 <= 7) {
-          if (board.getSquare(this.row + i, this.column).piece == null) {
-            possibleMoves.push([this.row + 1, this.column]);
-            if (i === 1 && this.row === 1 && board.getSquare(this.row + 2, this.column).piece == null) {
-              possibleMoves.push([this.row + 2, this.column]);
-            }
-          } else {
-            break;
-          }
-        }
-      }
 
-      for (let i = 1; i <= 1; i++) {
-        if (this.row + i <= 7 && this.column + i <= 7) {
-          if (board.getSquare(this.row + i, this.column + i).piece) {
-            if (board.getSquare(this.row + i, this.column + i).piece.side !== this.side) {
-              possibleMoves.push([this.row + i, this.column + i]);
-            }
-            break;
-          }
-        }
-      }
+    if (nextRow >= 0 && nextRow <= 7) {
+      if (board.getSquare(nextRow, this.column).piece == null) {
+        possibleMoves.push([nextRow, this.column]);
 
-      for (let i = 1; i <= 1; i++) {
-        if (this.row + i <= 7 && this.column - i >= 0) {
-          if (board.getSquare(this.row + i, this.column - i).piece) {
-            if (board.getSquare(this.row + i, this.column - i).piece.side !== this.side) {
-              possibleMoves.push([this.row + i, this.column - i]);
-            }
-            break;
-          }
+        const twoSquaresAhead = this.side === 'white' ? this.row - 2 : this.row + 2;
+        if (this.row === startRow && board.getSquare(twoSquaresAhead, this.column).piece == null) {
+          possibleMoves.push([twoSquaresAhead, this.column]);
         }
       }
     }
 
+    const leftDiagonal = this.column - 1;
+    if (nextRow >= 0 && leftDiagonal >= 0) {
+      const leftPiece = board.getSquare(nextRow, leftDiagonal).piece;
+      if (leftPiece && leftPiece.side !== this.side) {
+        possibleMoves.push([nextRow, leftDiagonal]);
+      }
+    }
+
+    const rightDiagonal = this.column + 1;
+    if (nextRow >= 0 && rightDiagonal <= 7) {
+      const rightPiece = board.getSquare(nextRow, rightDiagonal).piece;
+      if (rightPiece && rightPiece.side !== this.side) {
+        possibleMoves.push([nextRow, rightDiagonal]);
+      }
+    }
     return possibleMoves;
   }
 

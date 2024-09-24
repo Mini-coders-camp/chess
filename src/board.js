@@ -10,6 +10,7 @@ class Board {
     this.squares = Array.from(Array(8), () => Array(8));
     this.selectedSquare = null;
     this.legalMoves = [];
+    this.currentTurn = 'white';
 
     this.forEachSquare((row, column) => {
       const square = new Square(row, column);
@@ -30,13 +31,12 @@ class Board {
       return;
     }
 
-    if (!piece) return;
+    if (!piece || piece.side !== this.currentTurn) return;
 
     this.selectedSquare = clickedSquare;
     this.legalMoves = piece.findLegalMoves(this);
 
     console.log(this.legalMoves);
-
 
     for (const [targetRow, targetColumn] of this.legalMoves) {
       const targetSquare = this.getSquare(targetRow, targetColumn);
@@ -59,6 +59,8 @@ class Board {
     this.selectedSquare = null;
 
     this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
+
+    this.currentTurn = this.currentTurn === 'white' ? 'black' : 'white';
   }
 
   setPiecesOnStartingPositions() {
@@ -79,12 +81,9 @@ class Board {
     this.setPiece(new Bishop(0, 2, 'black'));
     this.setPiece(new Bishop(0, 5, 'black'));
 
-
     /***** King *****/
     this.setPiece(new King(0, 3, 'black'));
     this.setPiece(new King(7, 3, 'white'));
-
-
   }
 
   setPiece(piece) {
