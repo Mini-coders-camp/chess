@@ -26,19 +26,40 @@ class Board {
     const clickedSquare = this.getSquare(row, column);
     const piece = clickedSquare.piece;
 
-    if (this.selectedSquare) {
-      this.movePiece(clickedSquare);
-      return;
+    if (this.selectedSquare && clickedSquare !== this.selectedSquare) {
+      if (this.legalMoves.some(([legalRow, legalColumn]) => legalRow === row && legalColumn === column)) {
+        this.movePiece(clickedSquare);
+        this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
+        this.selectedSquare = null;
+        this.checkKingStatus();
+        return;
+      } else {
+        this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
+        this.selectedSquare = null;
+      }
     }
 
     if (!piece) return;
 
-    this.selectedSquare = clickedSquare;
     this.legalMoves = piece.findLegalMoves(this);
+
+    if (this.legalMoves.length === 0) {
+      clickedSquare.highlightNoMoves();
+      return;
+    }
+
+    this.selectedSquare = clickedSquare;
 
     for (const [targetRow, targetColumn] of this.legalMoves) {
       const targetSquare = this.getSquare(targetRow, targetColumn);
       targetSquare.toggleHighlight();
+    }
+  }
+
+  checkKingStatus() {
+    const isKingInCheck = this.isKingInCheck();
+    if (isKingInCheck) {
+      this.highlightTheSquareIfPieceIsIinDanger(isKingInCheck);
     }
   }
 
@@ -59,7 +80,7 @@ class Board {
     this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
 
     const isKingInCheck = this.isKingInCheck();
-    if(isKingInCheck) {
+    if (isKingInCheck) {
       this.highlightTheSquareIfPieceIsIinDanger(isKingInCheck);
     }
   }
@@ -98,8 +119,8 @@ class Board {
   getPieces() {
     const pieces = [];
     this.forEachSquare((row, column) => {
-      const piece = this.getSquare(row, column).piece;      
-      if(piece) {
+      const piece = this.getSquare(row, column).piece;
+      if (piece) {
         pieces.push(piece);
       }
     });
@@ -118,27 +139,27 @@ class Board {
     }
   }
 
-  isKingInCheck() {    
+  isKingInCheck() {
     let kingsPosition = this.findTheKingsPosition();
     let whiteKingInCheck = false;
     let blackKingInCheck = false;
-    
+
     const pieces = this.getPieces();
-    pieces.forEach(piece =>  {
+    pieces.forEach((piece) => {
       const futureMoves = piece.findLegalMoves(this);
       for (const [futureMoveRow, futureMoveColumn] of futureMoves) {
         if (futureMoveRow === kingsPosition[0][0] && futureMoveColumn === kingsPosition[0][1]) {
           whiteKingInCheck = true;
-        } 
+        }
         if (futureMoveRow === kingsPosition[1][0] && futureMoveColumn === kingsPosition[1][1]) {
           blackKingInCheck = true;
-        } 
+        }
       }
     });
 
-    if(whiteKingInCheck) {
+    if (whiteKingInCheck) {
       return kingsPosition[0];
-    } else if(blackKingInCheck) {
+    } else if (blackKingInCheck) {
       return kingsPosition[1];
     } else {
       return null;
@@ -148,10 +169,10 @@ class Board {
   findTheKingsPosition() {
     let whiteKingPosition, blackKingPosition;
     this.forEachSquare((row, column) => {
-      const piece = this.getSquare(row, column).piece;      
+      const piece = this.getSquare(row, column).piece;
       if (piece?.name === 'king') {
         if (piece.side === 'white') {
-          whiteKingPosition = [row, column];          
+          whiteKingPosition = [row, column];
         } else {
           blackKingPosition = [row, column];
         }
@@ -159,10 +180,10 @@ class Board {
     });
     return [whiteKingPosition, blackKingPosition];
   }
-  
+
   highlightTheSquareIfPieceIsIinDanger([row, column]) {
-      const squareOfPieceInDanger = this.getSquare(row, column);
-      squareOfPieceInDanger.checkHighlight();
+    const squareOfPieceInDanger = this.getSquare(row, column);
+    squareOfPieceInDanger.checkHighlight();
   }
 }
 

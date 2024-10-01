@@ -46,3 +46,8 @@ html{
 .check{
   background:rgba(247, 31, 2, 0.6);
 }
+
+.noLegalMoves{
+  background-color: rgba(255, 255, 0, 0.6);
+  transition: background-color 0.5s;
+}
