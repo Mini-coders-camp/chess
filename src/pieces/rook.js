@@ -36,17 +36,6 @@ class Rook extends Piece {
         } else if (!targetSquareIsOccupiedByTheOpponentsPiece) {
           break;
         }        
-
-        /*** Second solution ***/
-        // if (targetSquareIsEmpty) {
-        //   possibleMoves.push(destination);
-        //   continue;
-        // }
-        // if (targetSquareIsOccupiedByTheOpponentsPiece) {
-        //   possibleMoves.push(destination);
-        // }
-        // break;     
-        /*** ***/  
       }
     }
     return possibleMoves;

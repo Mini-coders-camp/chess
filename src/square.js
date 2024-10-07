@@ -30,6 +30,19 @@ class Square {
 
   removeHighlight() {
     this.element.classList.remove('possibleMove');
+    this.element.classList.remove('check');
+  }
+
+  checkHighlight() {
+    this.element.classList.toggle('check');
+  }
+
+  highlightNoMoves() {
+    this.element.classList.add('noLegalMoves');
+
+    setTimeout(() => {
+      this.element.classList.remove('noLegalMoves');
+    }, 1000);
   }
 }
 

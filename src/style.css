@@ -28,10 +28,10 @@ html{
 
 }
 .light{
-  background: rgb(215, 235, 243);
+  background: rgb(239, 245, 251);
 }
 .dark{
-  background:rgb(43, 43, 43);
+  background:rgb(86, 86, 86);
 }
 .black{
   color:black;
@@ -40,6 +40,14 @@ html{
   color:silver;
 }
 .possibleMove{
+  background:rgba(116, 255, 10, 0.6);
+}
 
-  background:rgba(222, 247, 2, 0.6);
+.check{
+  background:rgba(247, 31, 2, 0.6);
+}
+
+.noLegalMoves{
+  background-color: rgba(255, 255, 0, 0.6);
+  transition: background-color 0.5s;
 }
