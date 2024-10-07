@@ -49,9 +49,7 @@ class Board {
       return;
     }
 
-
     this.selectedSquare = clickedSquare;
-
 
     for (const [targetRow, targetColumn] of this.legalMoves) {
       const targetSquare = this.getSquare(targetRow, targetColumn);
@@ -82,14 +80,12 @@ class Board {
 
     this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
 
-
     this.currentTurn = this.currentTurn === 'white' ? 'black' : 'white';
 
     const isKingInCheck = this.isKingInCheck();
     if (isKingInCheck) {
       this.highlightTheSquareIfPieceIsIinDanger(isKingInCheck);
     }
-
   }
 
   setPiecesOnStartingPositions() {
@@ -121,7 +117,6 @@ class Board {
     /***** Queen *****/
     this.setPiece(new Queen(0, 3, 'black'));
     this.setPiece(new Queen(7, 3, 'white'));
-
   }
 
   setPiece(piece) {
