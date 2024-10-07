@@ -21,14 +21,14 @@ class Pawn extends Piece {
       startRow = 1;
     }
 
-    if (nextRow >= 0 && nextRow <= 7) {
-      if (board.getSquare(nextRow, this.column).piece == null) {
-        possibleMoves.push([nextRow, this.column]);
+    const targetSquareIsEmpty = nextRow >= 0 && nextRow <= 7 && board.getSquare(nextRow, this.column).piece == null;
 
-        const twoSquaresAhead = this.side === 'white' ? this.row - 2 : this.row + 2;
-        if (this.row === startRow && board.getSquare(twoSquaresAhead, this.column).piece == null) {
-          possibleMoves.push([twoSquaresAhead, this.column]);
-        }
+    if (targetSquareIsEmpty) {
+      possibleMoves.push([nextRow, this.column]);
+
+      const isAtStartingPosition = this.side === 'white' ? this.row - 2 : this.row + 2;
+      if (this.row === startRow && board.getSquare(isAtStartingPosition, this.column).piece == null) {
+        possibleMoves.push([isAtStartingPosition, this.column]);
       }
     }
 
