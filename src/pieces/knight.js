@@ -1,4 +1,6 @@
+import Pawn from './pawn';
 import Piece from './piece';
+
 
 class Knight extends Piece {
   constructor(row, column, side) {
@@ -7,22 +9,36 @@ class Knight extends Piece {
     this.display = `<i class="fas fa-chess-knight ${side}"></i>`; //fontawesome knight
   
   }
-  /* Legal_moves_Knight*/
-  findLegalMoves() {
+  
+  findLegalMoves(board) {
     const possibleMoves = [];
-   
-      this.row-1>=0 && this.column-2>=0 && this.row-1<=7 && this.column-2<=7 && possibleMoves.push([this.row-1,this.column-2]);
-      this.row-2>=0 && this.column-1>=0 && this.row-2<=7 && this.column-1<=7 && possibleMoves.push([this.row-2,this.column-1]);
-      this.row-2>=0 && this.column+1>=0 && this.row-2<=7 && this.column+1<=7 && possibleMoves.push([this.row-2,this.column+1]);
-      this.row-1>=0 && this.column+2>=0 && this.row-1<=7 && this.column+2<=7 && possibleMoves.push([this.row-1,this.column+2]);
-      this.row+1>=0 && this.column-2>=0 && this.row+1<=7 && this.column-2<=7 && possibleMoves.push([this.row+1,this.column-2]);
-      this.row+1>=0 && this.column+2>=0 && this.row+1<=7 && this.column+2<=7 && possibleMoves.push([this.row+1,this.column+2]);
-      this.row+2>=0 && this.column+1>=0 && this.row+2<=7 && this.column+1<=7 && possibleMoves.push([this.row+2,this.column+1]);
-      this.row+2>=0 && this.column-1>=0 && this.row+2<=7 && this.column-1<=7 && possibleMoves.push([this.row+2,this.column-1]);
 
-    console.log(possibleMoves);
+    const moves=[[-1,-2],[-2,-1],[-2,1],[-1,2],[1,-2],[1,2],[2,1],[2,-1]];
+    let moves_elements=[];
+
+    for (let i=0;i<moves.length;i++){
+        moves_elements = moves[i];
+        const ROW = moves_elements[0];
+        const COLUMN = moves_elements[1];
+        if(this.row+ROW>=0 && this.row+ROW<8 && this.column+COLUMN>=0 && this.column+COLUMN<8){
+          const targetSquare = board.getSquare(this.row+ROW, this.column+COLUMN);
+        const isFill = targetSquare.piece;
+        console.log(isFill);
+        const colorOfPiece=targetSquare.piece?.side;
+        if(isFill && colorOfPiece==this.side)
+          continue;
+        else {
+          possibleMoves.push([this.row+ROW,this.column+COLUMN]);
+        }
+
+        }
+                   
+
+    }
+
     return possibleMoves;
-  }
+  } 
+
 }
 
 export default Knight;

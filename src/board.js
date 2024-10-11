@@ -31,14 +31,12 @@ class Board {
     if (!piece) return;
 
     this.selectedSquare = clickedSquare;
-    this.legalMoves = piece.findLegalMoves();
-
+    this.legalMoves = piece.findLegalMoves(this);
     for (const [targetRow, targetColumn] of this.legalMoves) {
-      const targetSquare = this.getSquare(targetRow, targetColumn);
-      targetSquare.toggleHighlight();
+    const targetSquare = this.getSquare(targetRow, targetColumn);
+    targetSquare.toggleHighlight();
     }
   }
-
   movePiece(targetSquare) {
     const isLegalMove = this.legalMoves.some(
       ([row, column]) => targetSquare.row === row && targetSquare.column === column,
@@ -55,18 +53,15 @@ class Board {
 
     this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
   }
-  /* Knight_Start_Position*/
   setPiecesOnStartingPositions() {
     let pawn = new Pawn(6, 0, 'white');
     this.setPiece(pawn);
-    let knightB1 = new Knight(7,1,'white');
-    this.setPiece(knightB1);
-    let knightG1=new Knight(7,6,'white');
-    this.setPiece(knightG1);
-    let knightG8=new Knight(0,6,'black');
-    this.setPiece(knightG8);
-    let knightB8= new Knight(0,1,'black');
-    this.setPiece(knightB8);
+
+    this.setPiece(new Knight(7, 1, 'white'));
+    this.setPiece(new Knight(7, 6, 'white'));
+    this.setPiece(new Knight(0, 6, 'black'));
+    this.setPiece(new Knight(0, 1, 'black'));
+   
   }
 
   setPiece(piece) {
