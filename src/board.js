@@ -79,7 +79,9 @@ class Board {
     this.selectedSquare = null;
 
     this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
+
     this.currentTurn = this.currentTurn === 'white' ? 'black' : 'white';
+
     const isKingInCheck = this.isKingInCheck();
     if (isKingInCheck) {
       this.highlightTheSquareIfPieceIsIinDanger(isKingInCheck);
@@ -105,6 +107,10 @@ class Board {
     this.setPiece(new Bishop(0, 5, 'black'));
 
     /***** King *****/
+
+    this.setPiece(new King(0, 3, 'black'));
+    this.setPiece(new King(7, 3, 'white'));
+
     this.setPiece(new King(0, 4, 'black'));
     this.setPiece(new King(7, 4, 'white'));
 
