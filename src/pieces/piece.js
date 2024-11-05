@@ -7,8 +7,10 @@ class Piece {
     this.side = side; //'black' or 'white'
   }
   move(newRow, newColumn) {
+    console.log(`Ruch z: (${this.row}, ${this.column}) do: (${newRow}, ${newColumn})`);
     this.row = newRow;
     this.column = newColumn;
+    console.log(`Nowa pozycja: (${this.row}, ${this.column})`);
   }
 
   findLegalMoves() {}

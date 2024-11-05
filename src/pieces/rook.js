@@ -4,29 +4,30 @@ class Rook extends Piece {
     super(row, column, side);
     this.name = 'rook';
     this.display = `<i class="fas fa-chess-rook ${side}"></i>`; //fontawesome rook
+    this.hasMoved = false; //wieża jeszcze się nie ruszyła
   }
-  
+
   findLegalMoves(board) {
-    const possibleMoves = [];   
+    const possibleMoves = [];
 
     const directions = [
       { row: -1, col: 0 }, // Up
-      { row: 1, col: 0 },  // Down
+      { row: 1, col: 0 }, // Down
       { row: 0, col: -1 }, // Left
-      { row: 0, col: 1 }   // Right
+      { row: 0, col: 1 }, // Right
     ];
 
     for (const { row, col } of directions) {
       for (let distance = 1; distance < 8; distance++) {
         const newRow = this.row + distance * row;
         const newCol = this.column + distance * col;
-        const destination = [newRow, newCol]
+        const destination = [newRow, newCol];
 
         if (newRow < 0 || newRow >= 8 || newCol < 0 || newCol >= 8) break;
 
         const targetSquare = board.getSquare(newRow, newCol);
-        const targetSquareIsEmpty = !targetSquare.piece
-        const targetSquareIsOccupiedByTheOpponentsPiece = targetSquare.piece?.side !== this.side
+        const targetSquareIsEmpty = !targetSquare.piece;
+        const targetSquareIsOccupiedByTheOpponentsPiece = targetSquare.piece?.side !== this.side;
 
         if (targetSquareIsEmpty) {
           possibleMoves.push(destination);
@@ -35,7 +36,7 @@ class Rook extends Piece {
           break;
         } else if (!targetSquareIsOccupiedByTheOpponentsPiece) {
           break;
-        }        
+        }
       }
     }
     return possibleMoves;

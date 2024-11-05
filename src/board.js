@@ -26,8 +26,11 @@ class Board {
     const clickedSquare = this.getSquare(row, column);
     const piece = clickedSquare.piece;
 
+    console.log(`Kliknięto kwadrat: (${row}, ${column})`);
+
     if (this.selectedSquare && clickedSquare !== this.selectedSquare) {
       if (this.legalMoves.some(([legalRow, legalColumn]) => legalRow === row && legalColumn === column)) {
+        console.log(`Próbuję przesunąć bierkę na: (${row}, ${column})`);
         this.movePiece(clickedSquare);
         this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
         this.selectedSquare = null;
@@ -52,6 +55,7 @@ class Board {
 
     for (const [targetRow, targetColumn] of this.legalMoves) {
       const targetSquare = this.getSquare(targetRow, targetColumn);
+      console.log(`Target square do podświetlenia: (${targetRow}, ${targetColumn})`);
       targetSquare.toggleHighlight();
     }
   }
@@ -71,8 +75,28 @@ class Board {
     if (!isLegalMove) return;
 
     const piece = this.selectedSquare.piece;
+
+    const originalRow = piece.row; // Przechowuj oryginalne położenie bierki
+    const originalColumn = piece.column; // Przechowuj oryginalne położenie bierki
+
     piece.move(targetSquare.row, targetSquare.column);
+    console.log('Nowa pozycja kolumny bierki po ruchu:', piece.column);
     targetSquare.piece = piece;
+
+    console.log('Pozycja kolumny bierki:', piece.column, 'Kolumna docelowa:', targetSquare.column);
+
+    if (piece instanceof King && Math.abs(targetSquare.column - originalColumn) === 2) {
+      console.log('Wywoływanie metody castle');
+      const shortCastle = targetSquare.column > originalColumn;
+      const rookColumn = shortCastle ? 7 : 0;
+      const rook = this.getSquare(piece.row, rookColumn).piece;
+
+      this.castle(piece, rook, shortCastle);
+    }
+
+    if ((piece instanceof King || piece instanceof Rook) && !piece.hasMoved) {
+      piece.hasMoved = true;
+    }
 
     this.selectedSquare.removePiece();
     this.selectedSquare = null;
@@ -184,6 +208,37 @@ class Board {
   highlightTheSquareIfPieceIsIinDanger([row, column]) {
     const squareOfPieceInDanger = this.getSquare(row, column);
     squareOfPieceInDanger.checkHighlight();
+  }
+
+  isPathClear(row, startColumn, endColumn) {
+    const [minColumn, maxColumn] =
+      startColumn < endColumn ? [startColumn + 1, endColumn] : [endColumn + 1, startColumn];
+
+    for (let column = minColumn; column < maxColumn; column++) {
+      if (this.getSquare(row, column).piece) {
+        return false; //pole nie jest puste
+      }
+    }
+    return true;
+  }
+
+  castle(king, rook, shortCastle) {
+    console.log('Metoda castle została wywołana');
+    const row = king.row;
+
+    if (shortCastle) {
+      king.move(row, 6);
+      rook.move(row, 5);
+    } else {
+      king.move(row, 2);
+      rook.move(row, 3);
+    }
+
+    this.getSquare(row, king.column).piece = king;
+    this.getSquare(row, rook.column).piece = rook;
+
+    this.getSquare(king.row, 4).removePiece();
+    this.getSquare(row, shortCastle ? 7 : 0).removePiece();
   }
 }
 

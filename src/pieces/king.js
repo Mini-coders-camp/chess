@@ -5,6 +5,7 @@ class King extends Piece {
     super(row, column, side);
     this.name = 'king';
     this.display = `<i class="fas fa-chess-king ${side}"></i>`; //fontawesome king
+    this.hasMoved = false; //król jeszcze się nie ruszył
   }
   findLegalMoves(board) {
     const possibleMoves = [];
@@ -13,12 +14,15 @@ class King extends Piece {
       [0, 1], // right
       [-1, 0], // down
       [1, 0], // up
-      [1, 1], // up right
-      [-1, -1], // down left
-      [1, -1], // up left
-      [-1, 1], // down right
+      [1, 1], // down right
+      [-1, -1], // up left
+      [1, -1], // down left
+      [-1, 1], // up right
     ];
+    const row = this.row;
+    const column = this.column;
 
+    // dodanie standardowych ruchów króla
     directions.forEach((directions) => {
       const newRow = this.row + directions[0];
       const newColumn = this.column + directions[1];
@@ -30,6 +34,34 @@ class King extends Piece {
         }
       }
     });
+
+    // dodanie ruchów króla dla roszady
+    const rookShort = board.getSquare(row, 7).piece;
+    const rookLong = board.getSquare(row, 0).piece;
+
+    // krótka roszada przy założeniu pustej ścieżki
+    if (
+      rookShort?.name === 'rook' &&
+      !rookShort.hasMoved &&
+      !this.hasMoved &&
+      board.isPathClear(row, column, 7) &&
+      !board.getSquare(row, column + 2).piece
+    ) {
+      possibleMoves.push([row, column + 2]); //docelowa pozycja króla przy krótkiej roszadzie
+      console.log('Dodano krótką roszadę:', [row, column + 2]);
+    }
+
+    // długa roszada przy założeniu pustej ścieżki
+    if (
+      rookLong?.name === 'rook' &&
+      !rookLong.hasMoved &&
+      !this.hasMoved &&
+      board.isPathClear(row, column, 0) &&
+      !board.getSquare(row, column - 2).piece
+    ) {
+      possibleMoves.push([row, column - 2]); //docelowa pozycja króla przy długiej roszadzie
+      console.log('Dodano długą roszadę:', [row, column - 2]);
+    }
 
     return possibleMoves;
   }
