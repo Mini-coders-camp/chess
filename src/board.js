@@ -11,6 +11,7 @@ class Board {
     this.squares = Array.from(Array(8), () => Array(8));
     this.selectedSquare = null;
     this.legalMoves = [];
+    this.currentTurn = 'white';
 
     this.forEachSquare((row, column) => {
       const square = new Square(row, column);
@@ -42,7 +43,7 @@ class Board {
       }
     }
 
-    if (!piece) return;
+    if (!piece || piece.side !== this.currentTurn) return;
 
     this.legalMoves = piece.findLegalMoves(this);
 
@@ -102,7 +103,7 @@ class Board {
     this.selectedSquare = null;
 
     this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
-
+    this.currentTurn = this.currentTurn === 'white' ? 'black' : 'white';
     const isKingInCheck = this.isKingInCheck();
     if (isKingInCheck) {
       this.highlightTheSquareIfPieceIsIinDanger(isKingInCheck);
