@@ -29,6 +29,9 @@ class Board {
 
     console.log(`Kliknięto kwadrat: (${row}, ${column})`);
 
+    const originalRow = piece ? piece.row : null;
+    const originalColumn = piece ? piece.column : null;
+
     if (this.selectedSquare && clickedSquare !== this.selectedSquare) {
       if (this.legalMoves.some(([legalRow, legalColumn]) => legalRow === row && legalColumn === column)) {
         console.log(`Próbuję przesunąć bierkę na: (${row}, ${column})`);
@@ -57,7 +60,13 @@ class Board {
     for (const [targetRow, targetColumn] of this.legalMoves) {
       const targetSquare = this.getSquare(targetRow, targetColumn);
       console.log(`Target square do podświetlenia: (${targetRow}, ${targetColumn})`);
-      targetSquare.toggleHighlight();
+      const castlingMove = piece instanceof King && Math.abs(targetSquare.column - originalColumn) === 2;
+
+      if (castlingMove) {
+        targetSquare.highlightCastle();
+      } else {
+        targetSquare.toggleHighlight();
+      }
     }
   }
 
@@ -77,14 +86,14 @@ class Board {
 
     const piece = this.selectedSquare.piece;
 
-    const originalRow = piece.row; // Przechowuj oryginalne położenie bierki
-    const originalColumn = piece.column; // Przechowuj oryginalne położenie bierki
+    const originalRow = piece.row; // Przechowuj oryginalne położenie bierki !! drugi raz zdefiniowane (1st w handleClick)
+    const originalColumn = piece.column; // Przechowuj oryginalne położenie bierki !! drugi raz zdefiniowane (1st w handleClick)
 
     piece.move(targetSquare.row, targetSquare.column);
     console.log('Nowa pozycja kolumny bierki po ruchu:', piece.column);
     targetSquare.piece = piece;
 
-    console.log('Pozycja kolumny bierki:', piece.column, 'Kolumna docelowa:', targetSquare.column);
+    console.log('Pozycja kolumny bierki:', piece.column, 'Kolumna docelowa:', targetSquare.column); //pieceColumn i targetSquare.column wskazuja ta samą kolumnę a pieceColumn to powinna być aktualna pozycja bierki
 
     if (piece instanceof King && Math.abs(targetSquare.column - originalColumn) === 2) {
       console.log('Wywoływanie metody castle');

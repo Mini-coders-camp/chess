@@ -31,6 +31,7 @@ class Square {
   removeHighlight() {
     this.element.classList.remove('possibleMove');
     this.element.classList.remove('check');
+    this.element.classList.remove('castle');
   }
 
   checkHighlight() {
@@ -43,6 +44,10 @@ class Square {
     setTimeout(() => {
       this.element.classList.remove('noLegalMoves');
     }, 1000);
+  }
+
+  highlightCastle() {
+    this.element.classList.add('castle');
   }
 }
 
