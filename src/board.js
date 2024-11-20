@@ -29,8 +29,8 @@ class Board {
 
     console.log(`Kliknięto kwadrat: (${row}, ${column})`);
 
-    const originalRow = piece ? piece.row : null;
-    const originalColumn = piece ? piece.column : null;
+    const originalRow = piece ? piece.row : null; //1st definicja. drugi raz w movePiece
+    const originalColumn = piece ? piece.column : null; //1st definicja. drugi raz w movePiece
 
     if (this.selectedSquare && clickedSquare !== this.selectedSquare) {
       if (this.legalMoves.some(([legalRow, legalColumn]) => legalRow === row && legalColumn === column)) {
