@@ -48,7 +48,6 @@ class King extends Piece {
       !board.getSquare(row, column + 2).piece
     ) {
       possibleMoves.push([row, column + 2]); //docelowa pozycja króla przy krótkiej roszadzie
-      console.log('Dodano krótką roszadę:', [row, column + 2]);
     }
 
     // długa roszada przy założeniu pustej ścieżki
@@ -60,7 +59,6 @@ class King extends Piece {
       !board.getSquare(row, column - 2).piece
     ) {
       possibleMoves.push([row, column - 2]); //docelowa pozycja króla przy długiej roszadzie
-      console.log('Dodano długą roszadę:', [row, column - 2]);
     }
 
     return possibleMoves;

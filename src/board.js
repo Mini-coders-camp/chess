@@ -27,14 +27,11 @@ class Board {
     const clickedSquare = this.getSquare(row, column);
     const piece = clickedSquare.piece;
 
-    console.log(`Kliknięto kwadrat: (${row}, ${column})`);
-
     const originalRow = piece ? piece.row : null; //1st definicja. drugi raz w movePiece
     const originalColumn = piece ? piece.column : null; //1st definicja. drugi raz w movePiece
 
     if (this.selectedSquare && clickedSquare !== this.selectedSquare) {
       if (this.legalMoves.some(([legalRow, legalColumn]) => legalRow === row && legalColumn === column)) {
-        console.log(`Próbuję przesunąć bierkę na: (${row}, ${column})`);
         this.movePiece(clickedSquare);
         this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
         this.selectedSquare = null;
@@ -59,7 +56,6 @@ class Board {
 
     for (const [targetRow, targetColumn] of this.legalMoves) {
       const targetSquare = this.getSquare(targetRow, targetColumn);
-      console.log(`Target square do podświetlenia: (${targetRow}, ${targetColumn})`);
       const castlingMove = piece instanceof King && Math.abs(targetSquare.column - originalColumn) === 2;
 
       if (castlingMove) {
@@ -90,10 +86,9 @@ class Board {
     const originalColumn = piece.column; // Przechowuj oryginalne położenie bierki !! drugi raz zdefiniowane (1st w handleClick)
 
     piece.move(targetSquare.row, targetSquare.column);
-    console.log('Nowa pozycja kolumny bierki po ruchu:', piece.column);
     targetSquare.piece = piece;
 
-    console.log('Pozycja kolumny bierki:', piece.column, 'Kolumna docelowa:', targetSquare.column); //pieceColumn i targetSquare.column wskazuja ta samą kolumnę a pieceColumn to powinna być aktualna pozycja bierki
+    //console.log('Pozycja kolumny bierki:', piece.column, 'Kolumna docelowa:', targetSquare.column); //pieceColumn i targetSquare.column wskazuja ta samą kolumnę a pieceColumn to powinna być aktualna pozycja bierki
 
     if (piece instanceof King && Math.abs(targetSquare.column - originalColumn) === 2) {
       console.log('Wywoływanie metody castle');
@@ -126,10 +121,10 @@ class Board {
     this.setPiece(new Rook(0, 0, 'black'));
 
     /***** Pawns *****/
-    for (let i = 0; i < 8; i++) {
-      this.setPiece(new Pawn(6, i, 'white'));
-      this.setPiece(new Pawn(1, i, 'black'));
-    }
+    //for (let i = 0; i < 8; i++) {
+    //  this.setPiece(new Pawn(6, i, 'white'));
+    //  this.setPiece(new Pawn(1, i, 'black'));
+    //}
 
     /***** Bishops *****/
     this.setPiece(new Bishop(7, 2, 'white'));
@@ -232,9 +227,39 @@ class Board {
     return true;
   }
 
+  isSquareUnderAttack(row, column, side) {
+    const opponentSide = side === 'white' ? 'black' : 'white';
+    const pieces = this.getPieces().filter((piece) => piece.side === opponentSide);
+
+    for (const piece of pieces) {
+      console.log(`Figura ${piece.name} (${piece.row}, ${piece.column}) sprawdza pole (${row}, ${column})`);
+      const legalMoves = piece.findLegalMoves(this);
+      console.log(`${piece.name} może wykonać ruchy:`, legalMoves);
+      if (legalMoves.some(([r, c]) => r === row && c === column)) {
+        console.log(`Pole (${row}, ${column}) jest pod atakiem przez ${piece.name}`);
+        return true;
+      }
+    }
+    return false;
+  }
+
   castle(king, rook, shortCastle) {
     console.log('Metoda castle została wywołana');
     const row = king.row;
+    const side = king.side;
+
+    const columnsToCheck = shortCastle ? [4, 5, 6] : [4, 3, 2];
+    console.log(`Kolumny do sprawdzenia dla roszady: ${columnsToCheck}`);
+
+    for (const column of columnsToCheck) {
+      console.log(`Sprawdzanie pola (${row}, ${column}) dla szacha`);
+      if (this.isSquareUnderAttack(row, column, side)) {
+        console.log('Roszada niedozwolona - pole pod szachem', row, column, side);
+        return;
+      }
+    }
+
+    console.log('Roszada dozwolona');
 
     if (shortCastle) {
       king.move(row, 6);
