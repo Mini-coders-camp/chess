@@ -1,3 +1,7 @@
+import Knight from './knight';
+import Rook from './rook';
+import Bishop from './bishop';
+import Queen from './queen';
 import Piece from './piece';
 
 class Pawn extends Piece {
@@ -23,16 +27,12 @@ class Pawn extends Piece {
 
     return possibleMoves;
   }
-   move(newRow, newColumn) {
-    this.row=newRow;
-    this.column=newColumn;
-    if(this.row===0){
-      const isPromoted=this.promote();
-      return isPromoted;
-    }
-    if (this.row==7){
-      const isPromoted= this.promote();
-      return isPromoted;
+   move(targetSquare) {
+    this.row=targetSquare.row;
+    this.column=targetSquare.column;
+    if(this.row===0 || this.row===7){
+      const pawn=this.promote();
+      this.promotedPawn(pawn,targetSquare);
     }
   }
 
@@ -49,6 +49,43 @@ class Pawn extends Piece {
     return arrp;
     
   }
+  promotedPawn(pawn,targetSquare){
+    const morphPiece= pawn;
+    const NameOfNewPiece=morphPiece[0]
+    switch (NameOfNewPiece) {
+      case 'queen':
+        let newQueen= new Queen(morphPiece[1],morphPiece[2],morphPiece[3]);
+        targetSquare.removePiece(pawn);
+        targetSquare.piece=newQueen;
+        break;
+      case 'bishop':
+          let newBishop= new Bishop(morphPiece[1],morphPiece[2],morphPiece[3]);
+          targetSquare.removePiece(pawn);
+          targetSquare.piece=newBishop;
+          break;
+      case 'rook':
+            let newRook= new Rook(morphPiece[1],morphPiece[2],morphPiece[3]);
+            targetSquare.removePiece(pawn);
+            targetSquare.piece=newRook;
+            break;
+      case 'knight':
+              let newKnight= new Knight(morphPiece[1],morphPiece[2],morphPiece[3]);
+              targetSquare.removePiece(pawn);
+              targetSquare.piece=newKnight;
+              break;
+       default:
+                console.log(`Sorry, we are out of your choice.`);
+        
+    }
+   // console.log(newp);
+    //newp.promote();
+    /*let rowKing=pawn.row;
+    let colKing=pawn.column;
+    let sideKing=pawn.side;
+    let newKing= new King(rowKing,colKing,sideKing);
+    targetSquare.removePiece(pawn);
+    targetSquare.piece=newKing;*/
+}
   enPassant() {}
 }
 
