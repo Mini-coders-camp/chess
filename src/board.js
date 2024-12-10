@@ -12,6 +12,7 @@ class Board {
     this.selectedSquare = null;
     this.legalMoves = [];
     this.currentTurn = 'white';
+    this.isMoveInProgress = false; // Dodanie flagi
 
     this.forEachSquare((row, column) => {
       const square = new Square(row, column);
@@ -228,33 +229,40 @@ class Board {
   }
 
   isSquareUnderAttack(row, column, side) {
-    const opponentSide = side === 'white' ? 'black' : 'white';
-    const pieces = this.getPieces().filter((piece) => piece.side === opponentSide);
+    if (this.isMoveInProgress) return false; // Jeśli ruch jest w trakcie, nie wykonuj żadnych działań
 
-    for (const piece of pieces) {
-      console.log(`Figura ${piece.name} (${piece.row}, ${piece.column}) sprawdza pole (${row}, ${column})`);
-      const legalMoves = piece.findLegalMoves(this);
-      console.log(`${piece.name} może wykonać ruchy:`, legalMoves);
-      if (legalMoves.some(([r, c]) => r === row && c === column)) {
-        console.log(`Pole (${row}, ${column}) jest pod atakiem przez ${piece.name}`);
-        return true;
+    this.isMoveInProgress = true; // Ustawiamy flagę, że ruch jest w trakcie
+    try {
+      const opponentSide = side === 'white' ? 'black' : 'white';
+      const pieces = this.getPieces().filter((piece) => piece.side === opponentSide);
+
+      for (const piece of pieces) {
+        //console.log(`Figura ${piece.name} (${piece.row}, ${piece.column}) sprawdza pole (${row}, ${column})`);
+        const legalMoves = piece.findLegalMoves(this);
+        //console.log(`${piece.name} może wykonać ruchy:`, legalMoves);
+        if (legalMoves.some(([r, c]) => r === row && c === column)) {
+          //console.log(`Pole (${row}, ${column}) jest pod atakiem przez ${piece.name}`);
+          return true;
+        }
       }
+      return false; //Pole nie jest pod atakiem
+    } finally {
+      this.isMoveInProgress = false; // Po zakończeniu ruchu, resetujemy flagę
     }
-    return false;
   }
 
   castle(king, rook, shortCastle) {
-    console.log('Metoda castle została wywołana');
+    //console.log('Metoda castle została wywołana');
     const row = king.row;
     const side = king.side;
 
     const columnsToCheck = shortCastle ? [4, 5, 6] : [4, 3, 2];
-    console.log(`Kolumny do sprawdzenia dla roszady: ${columnsToCheck}`);
+    //console.log(`Kolumny do sprawdzenia dla roszady: ${columnsToCheck}`);
 
     for (const column of columnsToCheck) {
-      console.log(`Sprawdzanie pola (${row}, ${column}) dla szacha`);
+      //console.log(`Sprawdzanie pola (${row}, ${column}) dla szacha`);
       if (this.isSquareUnderAttack(row, column, side)) {
-        console.log('Roszada niedozwolona - pole pod szachem', row, column, side);
+        //console.log('Roszada niedozwolona - pole pod szachem', row, column, side);
         return;
       }
     }

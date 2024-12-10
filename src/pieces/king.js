@@ -19,8 +19,9 @@ class King extends Piece {
       [1, -1], // down left
       [-1, 1], // up right
     ];
-    const row = this.row;
-    const column = this.column;
+    const row = this.row; // nie wiem czy potrzebne
+    const column = this.column; // nie wiem czy potrzebne
+    const side = this.side; // nie wiem czy potrzebne
 
     // dodanie standardowych ruchów króla
     directions.forEach((directions) => {
@@ -34,35 +35,39 @@ class King extends Piece {
         }
       }
     });
+    return this.includeCastlingMoves(board, possibleMoves);
+  }
 
-    // dodanie ruchów króla dla roszady
-    const rookShort = board.getSquare(row, 7).piece;
-    const rookLong = board.getSquare(row, 0).piece;
+  includeCastlingMoves(board, possibleMoves) {
+    if (this.hasMoved) return possibleMoves;
 
-    // krótka roszada przy założeniu pustej ścieżki
-    if (
-      rookShort?.name === 'rook' &&
-      !rookShort.hasMoved &&
-      !this.hasMoved &&
-      board.isPathClear(row, column, 7) &&
-      !board.getSquare(row, column + 2).piece
-    ) {
-      possibleMoves.push([row, column + 2]); //docelowa pozycja króla przy krótkiej roszadzie
-    }
+    const row = this.row;
+    const side = this.side;
 
-    // długa roszada przy założeniu pustej ścieżki
-    if (
-      rookLong?.name === 'rook' &&
-      !rookLong.hasMoved &&
-      !this.hasMoved &&
-      board.isPathClear(row, column, 0) &&
-      !board.getSquare(row, column - 2).piece
-    ) {
-      possibleMoves.push([row, column - 2]); //docelowa pozycja króla przy długiej roszadzie
-    }
+    const addCastlingMove = (rookColumn, kingColumn, rookTarget, kingTarget) => {
+      const rook = board.getSquare(row, rookColumn)?.piece;
+      if (
+        rook?.name === 'rook' &&
+        !rook.hasMoved &&
+        board.isPathClear(row, Math.min(rookColumn, kingColumn), Math.max(rookColumn, kingColumn)) &&
+        !board.isSquareUnderAttack(row, kingColumn, side) &&
+        !board.isSquareUnderAttack(row, rookTarget, side) &&
+        !board.isSquareUnderAttack(row, kingTarget, side)
+      ) {
+        possibleMoves.push([row, kingTarget]); //dodaj ruch roszady
+      }
+    };
+
+    addCastlingMove(7, 4, 5, 6); //krótka roszada
+    addCastlingMove(0, 4, 3, 2); //długa roszada
 
     return possibleMoves;
   }
 }
-
 export default King;
+
+/*return possibleMoves;
+}
+}
+
+export default King;*/
