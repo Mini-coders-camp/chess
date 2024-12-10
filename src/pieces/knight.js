@@ -23,7 +23,6 @@ class Knight extends Piece {
         if(this.row+ROW>=0 && this.row+ROW<8 && this.column+COLUMN>=0 && this.column+COLUMN<8){
           const targetSquare = board.getSquare(this.row+ROW, this.column+COLUMN);
         const isFill = targetSquare.piece;
-        console.log(isFill);
         const colorOfPiece=targetSquare.piece?.side;
         if(isFill && colorOfPiece==this.side)
           continue;
