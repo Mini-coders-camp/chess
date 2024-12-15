@@ -40,6 +40,10 @@ class Rook extends Piece {
     }
     return possibleMoves;
   }
+
+  clone() {
+    return new Rook(this.row, this.column, this.side);
+  }
 }
 
 export default Rook;

@@ -6,8 +6,8 @@ import King from './pieces/king';
 import Queen from './pieces/queen';
 
 class Board {
-  constructor() {
-    this.element = document.getElementById('board');
+  constructor(isCloning = false) {
+    this.element = isCloning ? document.createElement('div') : document.getElementById('board');
     this.squares = Array.from(Array(8), () => Array(8));
     this.selectedSquare = null;
     this.legalMoves = [];
@@ -16,11 +16,15 @@ class Board {
     this.forEachSquare((row, column) => {
       const square = new Square(row, column);
       this.squares[row][column] = square;
-      this.element.appendChild(square.element);
-      square.element.addEventListener('click', () => this.handleClick(row, column));
+      if (!isCloning) {
+        this.element.appendChild(square.element);
+        square.element.addEventListener('click', () => this.handleClick(row, column));
+      }
     });
 
-    this.setPiecesOnStartingPositions();
+    if (!isCloning) {
+      this.setPiecesOnStartingPositions();
+    }
   }
 
   handleClick(row, column) {
@@ -42,13 +46,12 @@ class Board {
 
     if (!piece || piece.side !== this.currentTurn) return;
 
-    this.legalMoves = piece.findLegalMoves(this);
+    this.legalMoves = this.filterLegalMovesForKingSafety(piece);
 
     if (this.legalMoves.length === 0) {
       clickedSquare.highlightNoMoves();
       return;
     }
-
     this.selectedSquare = clickedSquare;
 
     for (const [targetRow, targetColumn] of this.legalMoves) {
@@ -60,7 +63,7 @@ class Board {
   checkKingStatus() {
     const isKingInCheck = this.isKingInCheck();
     if (isKingInCheck) {
-      this.highlightTheSquareIfPieceIsIinDanger(isKingInCheck);
+      this.highlightTheSquareIfPieceIsIinDanger(isKingInCheck.position);
     }
   }
 
@@ -80,10 +83,7 @@ class Board {
 
     this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
     this.currentTurn = this.currentTurn === 'white' ? 'black' : 'white';
-    const isKingInCheck = this.isKingInCheck();
-    if (isKingInCheck) {
-      this.highlightTheSquareIfPieceIsIinDanger(isKingInCheck);
-    }
+    this.checkKingStatus();
   }
 
   setPiecesOnStartingPositions() {
@@ -159,9 +159,9 @@ class Board {
     });
 
     if (whiteKingInCheck) {
-      return kingsPosition[0];
+      return { position: kingsPosition[0], color: 'white' };
     } else if (blackKingInCheck) {
-      return kingsPosition[1];
+      return { position: kingsPosition[1], color: 'black' };
     } else {
       return null;
     }
@@ -185,6 +185,49 @@ class Board {
   highlightTheSquareIfPieceIsIinDanger([row, column]) {
     const squareOfPieceInDanger = this.getSquare(row, column);
     squareOfPieceInDanger.checkHighlight();
+  }
+
+  cloneBoard() {
+    const newBoard = new Board(true);
+    this.forEachSquare((row, column) => {
+      const piece = this.getSquare(row, column).piece;
+      if (piece) {
+        const clonePiece = piece.clone();
+        newBoard.setPiece(clonePiece);
+      }
+    });
+    return newBoard;
+  }
+
+  simulateMovePiece(selectedSquare, targetSquare) {
+    const simulatedBoard = this.cloneBoard();
+    const piece = simulatedBoard.getSquare(selectedSquare.row, selectedSquare.column).piece;
+
+    piece.move(targetSquare.row, targetSquare.column);
+    simulatedBoard.getSquare(targetSquare.row, targetSquare.column).piece = piece;
+    simulatedBoard.getSquare(selectedSquare.row, selectedSquare.column).removePiece();
+
+    return simulatedBoard;
+  }
+
+  filterLegalMovesForKingSafety(piece) {    
+    const originalSquare = this.getSquare(piece.row, piece.column);
+    const legalMoves = piece.findLegalMoves(this);
+    const safeMoves = [];
+
+    for (const [targetRow, targetColumn] of legalMoves) {
+        const targetSquare = this.getSquare(targetRow, targetColumn);
+        const isKingInCheck = this.simulateMovePiece(originalSquare, targetSquare).isKingInCheck();
+
+        if(isKingInCheck) {
+          if(isKingInCheck.color != originalSquare.piece.side){
+            safeMoves.push([targetRow, targetColumn]);
+          }
+        } else {
+          safeMoves.push([targetRow, targetColumn]);
+        }    
+    }
+    return safeMoves;
   }
 }
 

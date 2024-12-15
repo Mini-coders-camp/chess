@@ -33,6 +33,10 @@ class King extends Piece {
 
     return possibleMoves;
   }
+
+  clone() {
+    return new King(this.row, this.column, this.side);
+  }
 }
 
 export default King;

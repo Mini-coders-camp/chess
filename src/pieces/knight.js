@@ -11,6 +11,10 @@ class Knight extends Piece {
 
     return possibleMoves;
   }
+
+  clone() {
+    return new Knight(this.row, this.column, this.side);
+  }
 }
 
 export default Knight;

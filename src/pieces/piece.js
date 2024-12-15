@@ -12,6 +12,7 @@ class Piece {
   }
 
   findLegalMoves() {}
+  clone() {}
 }
 
 export default Piece;

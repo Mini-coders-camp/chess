@@ -25,6 +25,9 @@ class Pawn extends Piece {
 
   promote() {}
   enPassant() {}
+  clone() {
+    return new Pawn(this.row, this.column, this.side);
+  }
 }
 
 export default Pawn;
