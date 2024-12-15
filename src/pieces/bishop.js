@@ -59,6 +59,10 @@ class Bishop extends Piece {
 
     return possibleMoves;
   }
+
+  clone() {
+    return new Bishop(this.row, this.column, this.side);
+  }
 }
 
 export default Bishop;

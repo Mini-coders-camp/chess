@@ -43,6 +43,10 @@ class Queen extends Piece {
 
     return possibleMoves;
   }
+
+  clone() {
+    return new Queen(this.row, this.column, this.side);
+  }
 }
 
 export default Queen;
