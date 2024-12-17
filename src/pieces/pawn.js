@@ -36,29 +36,17 @@ class Pawn extends Piece {
 
   promote(targetSquare) {
     const changePiece = prompt('What piece do you want to choose: queen, bishop, rook, knight');
-    const newPiece = changePiece.toLowerCase().trim();
-    console.log('🚀 ~ Pawn ~ promote ~ newPiece:', newPiece);
+    const newPieceName = changePiece.toLowerCase().trim();
 
-    let Piece;
+    const pieceNameToPieceMap = {
+      bishop: Bishop,
+      rook: Rook,
+      knight: Knight,
+      queen: Queen,
+    };
 
-    switch (newPiece) {
-      case 'bishop':
-        Piece = Bishop;
-        break;
-      case 'rook':
-        Piece = Rook;
-        break;
-      case 'knight':
-        Piece = Knight;
-        break;
-      case 'queen':
-      default:
-        Piece = Queen;
-    }
-
-    console.log(Piece);
-    let piece = new Piece(this.row, this.column, this.side);
-    console.log('🚀 ~ Pawn ~ promote ~ piece:', piece);
+    const Piece = pieceNameToPieceMap[newPieceName];
+    const piece = new Piece(this.row, this.column, this.side);
     targetSquare.removePiece();
     targetSquare.piece = piece;
   }
