@@ -31,45 +31,36 @@ class Pawn extends Piece {
     this.row=targetSquare.row;
     this.column=targetSquare.column;
     if(this.row===0 || this.row===7){
-      const pawn=this.promote();
-      this.promotedPawn(pawn,targetSquare);
+      const pawnmorph=this; //2 metody do jednej
+      const pawn=this.promote(targetSquare);
+     // this.promote(targetSquare);
     }
   }
 
-  promote(board) {
-    const piecePawn = this; 
+  promote(targetSquare) {
+    // const piecePawn = pawnmorph; 
+    // console.log();
     const changePiece=prompt('What piece do you want to choose: queen, bishop, rook, knight');
     const newPiece=changePiece.toLowerCase().trim();
-    const arrp =[];
-    const nameof=newPiece;
-    arrp[0]=nameof;
-    arrp[1]=piecePawn.row;
-    arrp[2]=piecePawn.column;
-    arrp[3]=piecePawn.side;
-    return arrp;
-    
-  }
-  promotedPawn(pawn,targetSquare){
-    const morphPiece= pawn;
-    const NameOfNewPiece=morphPiece[0]
-    switch (NameOfNewPiece) {
+    switch (newPiece) {
       case 'queen':
-        let newQueen= new Queen(morphPiece[1],morphPiece[2],morphPiece[3]);
+        let newQueen= new Queen(this.row,this.column,this.side);
         targetSquare.removePiece(pawn);
         targetSquare.piece=newQueen;
+        return newQueen;
         break;
       case 'bishop':
-          let newBishop= new Bishop(morphPiece[1],morphPiece[2],morphPiece[3]);
+          let newBishop= new Bishop(this.row,this.column,this.side);
           targetSquare.removePiece(pawn);
           targetSquare.piece=newBishop;
           break;
       case 'rook':
-            let newRook= new Rook(morphPiece[1],morphPiece[2],morphPiece[3]);
+            let newRook= new Rook(newPiece,this.row,this.side);
             targetSquare.removePiece(pawn);
             targetSquare.piece=newRook;
             break;
       case 'knight':
-              let newKnight= new Knight(morphPiece[1],morphPiece[2],morphPiece[3]);
+              let newKnight= new Knight(newPiece,this.row,this.side);
               targetSquare.removePiece(pawn);
               targetSquare.piece=newKnight;
               break;
@@ -77,6 +68,43 @@ class Pawn extends Piece {
                 console.log(`Sorry, we are out of your choice.`);
         
     }
+    // const arrp =[];
+    // const nameof=newPiece;
+    // arrp[0]=nameof;
+    // arrp[1]=piecePawn.row;
+    // arrp[2]=piecePawn.column;
+    // arrp[3]=piecePawn.side;
+    // return arrp;
+    
+ // }
+  // promotedPawn(pawn,targetSquare){
+  //   const morphPiece= pawn;
+  //   const NameOfNewPiece=morphPiece[0]
+  //   switch (NameOfNewPiece) {
+  //     case 'queen':
+  //       let newQueen= new Queen(morphPiece[1],morphPiece[2],morphPiece[3]);
+  //       targetSquare.removePiece(pawn);
+  //       targetSquare.piece=newQueen;
+  //       break;
+  //     case 'bishop':
+  //         let newBishop= new Bishop(morphPiece[1],morphPiece[2],morphPiece[3]);
+  //         targetSquare.removePiece(pawn);
+  //         targetSquare.piece=newBishop;
+  //         break;
+  //     case 'rook':
+  //           let newRook= new Rook(morphPiece[1],morphPiece[2],morphPiece[3]);
+  //           targetSquare.removePiece(pawn);
+  //           targetSquare.piece=newRook;
+  //           break;
+  //     case 'knight':
+  //             let newKnight= new Knight(morphPiece[1],morphPiece[2],morphPiece[3]);
+  //             targetSquare.removePiece(pawn);
+  //             targetSquare.piece=newKnight;
+  //             break;
+  //      default:
+  //               console.log(`Sorry, we are out of your choice.`);
+        
+  //   }
    // console.log(newp);
     //newp.promote();
     /*let rowKing=pawn.row;
