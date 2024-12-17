@@ -1,11 +1,6 @@
 import Pawn from './pieces/pawn';
 import Square from './square';
 import Knight from './pieces/knight';
-import Piece from './pieces/piece';
-import King from './pieces/king';
-import Rook from './pieces/rook';
-import Bishop from './pieces/bishop';
-import Queen from './pieces/queen';
 
 class Board {
   constructor() {
@@ -27,7 +22,7 @@ class Board {
   handleClick(row, column) {
     const clickedSquare = this.getSquare(row, column);
     const piece = clickedSquare.piece;
-    
+
     if (this.selectedSquare) {
       this.movePiece(clickedSquare);
       return;
@@ -38,8 +33,8 @@ class Board {
     this.selectedSquare = clickedSquare;
     this.legalMoves = piece.findLegalMoves(this); //sprawdzic set piece
     for (const [targetRow, targetColumn] of this.legalMoves) {
-    const targetSquare = this.getSquare(targetRow, targetColumn);
-    targetSquare.toggleHighlight();
+      const targetSquare = this.getSquare(targetRow, targetColumn);
+      targetSquare.toggleHighlight();
     }
   }
   movePiece(targetSquare) {
@@ -49,8 +44,8 @@ class Board {
     if (!isLegalMove) return;
 
     const piece = this.selectedSquare.piece;
-    piece.move(targetSquare);    
-           
+    piece.move(targetSquare);
+
     this.selectedSquare.removePiece();
     this.selectedSquare = null;
     this.forEachSquare((row, column) => this.getSquare(row, column).removeHighlight());
@@ -58,14 +53,13 @@ class Board {
   setPiecesOnStartingPositions() {
     let pawn = new Pawn(6, 0, 'white');
     this.setPiece(pawn);
-    let pawn1=new Pawn(1,4,'white');
+    let pawn1 = new Pawn(1, 4, 'white');
     this.setPiece(pawn1);
-  
+
     this.setPiece(new Knight(7, 1, 'white'));
     this.setPiece(new Knight(7, 6, 'white'));
     this.setPiece(new Knight(0, 6, 'black'));
     this.setPiece(new Knight(0, 1, 'black'));
-   
   }
 
   setPiece(piece) {
@@ -75,8 +69,6 @@ class Board {
   getSquare(row, column) {
     return this.squares[row][column];
   }
-  
-
 
   forEachSquare(callback) {
     for (let row = 0; row < 8; row++) {
@@ -88,6 +80,3 @@ class Board {
 }
 
 export default Board;
-// zrobic nowy branch do piona 
-// default hetmana
-//
