@@ -25,8 +25,6 @@ class Knight extends Piece {
           possibleMoves.push([this.row+rowOffset,this.column+columnOffset]);
 
         }
-                   
-
     }
 
     return possibleMoves;
